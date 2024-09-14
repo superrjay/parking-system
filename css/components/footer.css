@@ -1,0 +1,22 @@
+/* Custom Footer Styling */
+footer {
+    border-radius: 13px 13px 0px 0px;
+    border: 0.8px solid #CDC5EB;
+    background: #FFF;
+}
+
+.footer-buttons .btn {
+    margin: 0 5px; /* Space between the buttons */
+    border-radius: 50%; /* Circular buttons */
+    padding: 10px 12px; /* Adjust button size */
+}
+.footer-buttons .btn i {
+    font-size: 1.2rem; /* Slightly larger icon size */
+}
+footer .p-3 {
+    font-size: 0.9rem; /* Slightly smaller font size */
+}
+.footer-time {
+    font-size: 0.9rem; /* Smaller font size for time */
+    text-align: right;
+}
