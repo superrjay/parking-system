@@ -4,12 +4,14 @@
     border: 0.8px solid #CDC5EB;
     background: #FFF;
     height: 750px;
-} 
-    .list-group  {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+}
+
+.list-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .sidebar-right .btn-custom {
     margin-bottom: 10px;
     padding: 30px 20px;
@@ -19,6 +21,13 @@
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     width: 164.952px;
     height: 74.976px;
+    transition: background 0.3s, box-shadow 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.sidebar-right .btn-custom:hover {
+    background: #e0e0e0; /* Light grey background on hover */
+    box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.35); /* Enhanced shadow on hover */
+    color: #000; /* Change text color if needed */
 }
 
 .img {
@@ -49,4 +58,3 @@
     margin: 0;
     padding-top: 5px;
 }
-
