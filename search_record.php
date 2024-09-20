@@ -1,13 +1,16 @@
 <?php
 include 'db_connection.php';
 
-if (isset($_GET['plateNumber'])) {
-    $plateNumber = $_GET['plateNumber'];
-    $sql = "SELECT * FROM records WHERE plate_number = ?";
+if (isset($_GET['cardNumber'])) {
+    $cardNumber = $_GET['cardNumber'];
+    $sql = "SELECT * FROM records WHERE card_number = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $plateNumber);
+    $stmt->bind_param("s", $cardNumber);
+
     $stmt->execute();
     $result = $stmt->get_result();
+
+    header('Content-Type: application/json');
 
     if ($result->num_rows > 0) {
         $record = $result->fetch_assoc();

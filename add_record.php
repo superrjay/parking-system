@@ -2,21 +2,31 @@
 include 'db_connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $plateNumber = $_POST['plateNumber'];
-    $inTime = $_POST['inTime'];
-    $status = $_POST['status'];
-    $charge = $_POST['charge'];
-
-    // Insert the new record
-    $sql = "INSERT INTO records (plate_number, in_time, status, charge) VALUES (?, ?, ?, ?)";
+    $cardNumber = $_POST['cardNumber'] ?? '';
+    $name = $_POST['name'] ?? '';
+    $plateNumber = $_POST['plateNumber'] ?? '';
+    $contactNumber = $_POST['contactNumber'] ?? '';
+    $vehicleType = $_POST['vehicleType'] ?? 'Unknown';
+    $duration = $_POST['duration'] ?? 0;
+    $ratePerMinute = 5;
+    $charge = $duration * $ratePerMinute;
+    $status = 'Active';
+    
+    // Insert new record into the database
+    $sql = "INSERT INTO records (card_number, name, plate_number, contact, duration, vehicle_type, status, charge) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $plateNumber, $inTime, $status, $charge);
-    $stmt->execute();
-
+    $stmt->bind_param("ssssissd", $cardNumber, $name, $plateNumber, $contactNumber, $duration, $vehicleType, $status, $charge);
+    
+    if ($stmt->execute()) {
+        echo "Record added successfully.";
+    } else {
+        echo "Error adding record: " . $stmt->error;
+    }
     $stmt->close();
     $conn->close();
 
-    header("Location: index.php"); // Redirect to a page or back to the form
+    header("Location: index.php");
     exit();
 }
 ?>
