@@ -1,23 +1,23 @@
-// JavaScript for search functionality
 document.getElementById('searchButton').addEventListener('click', function() {
-    var plateNumber = document.getElementById('searchPlateNumber').value;
+    var cardNumber = document.getElementById('searchCardNumber').value;
 
     // Fetch record from server
-    fetch('search_record.php?plateNumber=' + encodeURIComponent(plateNumber))
+    fetch('search_record.php?cardNumber=' + encodeURIComponent(cardNumber))
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Populate fields
-                document.getElementById('plateNumber').value = data.record.plate_number;
+                // Populate fields with data from the server
+                document.getElementById('cardNumber').value = data.record.card_number;
                 document.getElementById('charge').value = data.record.charge;
                 document.getElementById('recordDetails').style.display = 'block';
             } else {
-                alert(data.message); // Show error message if any
+                alert(data.message); // Show error message if no record is found
                 document.getElementById('recordDetails').style.display = 'none';
             }
         })
         .catch(error => console.error('Error:', error));
 });
+
 
 // Keyboard shortcuts for button clicks
 document.addEventListener('keydown', function(event) {

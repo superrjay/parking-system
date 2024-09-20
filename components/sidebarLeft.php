@@ -1,4 +1,3 @@
-<!-- Left Column (Booklist) -->
 <div class="col-lg-2">
     <div class="sidebar-left">
         <div class="nav">

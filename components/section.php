@@ -1,9 +1,13 @@
 <?php
-include 'db_connection.php'; // Include your database connection file
+include 'db_connection.php';
 
-// Fetch records from the database
-$sql = "SELECT * FROM records ORDER BY in_time DESC";
+// Define your rate per minute
+$ratePerMinute = 5; //
+$sql = "SELECT * FROM records";
 $result = $conn->query($sql);
+    if ($result === false) {
+        die("Error: " . $conn->error);
+    }
 ?>
 
 <section class="container mt-4">
@@ -13,8 +17,6 @@ $result = $conn->query($sql);
         <!-- Center Column (Current Record) -->
         <div class="col-lg-8">
             <?php include 'components/navbar.php'; ?>
-
-            <!-- Second Row (Table with Records) -->
             <div class="row">
                 <div class="col">
                     <div class="card">
@@ -22,31 +24,42 @@ $result = $conn->query($sql);
                             <table class="table mt-3">
                                 <thead>
                                     <tr>
+                                        <th>No.</th>
+                                        <th>Card No.</th>
+                                        <th>Name</th>
                                         <th>Plate Number</th>
-                                        <th>In Time</th>
+                                        <th>Contact</th>
+                                        <th>Duration (Minutes)</th>
                                         <th>Status</th>
                                         <th>Charge</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
+
                                     if ($result->num_rows > 0) {
-                                        // Output data for each row
+                                        $counter = 1;
                                         while ($row = $result->fetch_assoc()) {
+                                            $duration = $row['duration'] ?? 0;
+                                            $charge = $duration * $ratePerMinute;
+
                                             echo "<tr>";
+                                            echo "<td>" . $counter++ . "</td>";
+                                            echo "<td>" . $row['card_number'] . "</td>";
+                                            echo "<td>" . $row['name'] . "</td>";
                                             echo "<td>" . $row['plate_number'] . "</td>";
-                                            echo "<td>" . date('m/d/Y - h:iA', strtotime($row['in_time'])) . "</td>";
+                                            echo "<td>" . $row['contact'] . "</td>";
+                                            echo "<td>" . ($duration > 0 ? $duration . " minutes" : "0 minutes") . "</td>";
                                             echo "<td><span class='badge " . ($row['status'] == 'Active' ? 'bg-success' : ($row['status'] == 'Overstay' ? 'bg-danger' : 'bg-warning')) . "'>" . $row['status'] . "</span></td>";
-                                            echo "<td>₱" . number_format($row['charge'], 2) . "</td>";
-                                            echo "<td><button class='btn btn-primary btn-sm'>View Details</button></td>";
+                                            echo "<td>₱" . number_format($charge, 2) . "</td>";
                                             echo "</tr>";
                                         }
                                     } else {
-                                        echo "<tr><td colspan='5'>No records found</td></tr>";
+                                        echo "<tr><td colspan='9'>No records found</td></tr>";
                                     }
                                     ?>
-                                </tbody>
+                                    </tbody>
+
                             </table>
                         </div>
                     </div>
@@ -54,7 +67,6 @@ $result = $conn->query($sql);
             </div>
         </div>
 
-        <!-- Right Column (User Info and Buttons) -->
         <?php include 'components/sidebarRight.php'; ?>
     </div>
 </section>
