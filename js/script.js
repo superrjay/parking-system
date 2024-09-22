@@ -21,28 +21,12 @@ document.getElementById('searchButton').addEventListener('click', function() {
 
 // Keyboard shortcuts for button clicks
 document.addEventListener('keydown', function(event) {
-    switch (event.key) {
-        case 'F6':
-            event.preventDefault();
-            document.getElementById('paymentButton').click();
-            break;
-        case 'F7':
-            event.preventDefault();
-            document.getElementById('addButton').click();
-            break;
-        case 'F8':
-            event.preventDefault();
-            document.getElementById('voidButton').click();
-            break;
-        case 'F9':
-            event.preventDefault();
-            document.getElementById('rewardCardButton').click();
-            break;
-        case 'F10':
-            event.preventDefault();
-            document.getElementById('concernButton').click();
-            break;
-        default:
-            break;
+    if (event.key === 'F6') {
+        event.preventDefault();
+        new bootstrap.Modal(document.getElementById('paymentModal')).show();
+    }
+    if (event.key === 'F7') {
+        event.preventDefault();
+        new bootstrap.Modal(document.getElementById('addRecordModal')).show();
     }
 });

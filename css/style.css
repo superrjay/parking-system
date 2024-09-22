@@ -5,7 +5,6 @@
 
 /* Component styles */
 @import url('./components/header.css');
-@import url('./components/navbar.css');
 @import url('./components/sidebarLeft.css');
 @import url('./components/sidebarRight.css');
 @import url('./components/section.css');

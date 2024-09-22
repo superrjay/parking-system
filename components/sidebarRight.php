@@ -66,7 +66,7 @@
                 <form id="addRecordForm" method="POST" action="add_record.php">
                     <div class="mb-3">
                         <label for="cardNumber" class="form-label">Card Number</label>
-                        <input type="text" class="form-control" id="cardNumber" name="cardNumber" required>
+                        <input type="number" class="form-control" id="cardNumber" name="cardNumber" required>
                     </div>
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
@@ -78,7 +78,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="contactNumber" class="form-label">Contact Number</label>
-                        <input type="text" class="form-control" id="contactNumber" name="contactNumber" required>
+                        <input type="tel" class="form-control" id="contactNumber" name="contactNumber" required>
                     </div>
                     <div class="mb-3">
                         <label for="duration" class="form-label">Duration (Minutes)</label>
@@ -87,9 +87,12 @@
                     <div class="mb-3">
                         <label for="vehicleType" class="form-label">Type</label>
                         <select class="form-select" id="vehicleType" name="vehicleType" required>
-                            <option value="4 wheels">4 Wheels</option>
-                            <option value="2 wheels">2 Wheels</option>
-                            <!-- Add other vehicle types as needed -->
+                            <option value="CAR">CAR</option>
+                            <option value="VAN">VAN</option>
+                            <option value="SUV">SUV</option>
+                            <option value="TRUCK">TRUCK</option>
+                            <option value="MOTORCYCLE">MOTORCYCLE</option>
+                            <option value="ELECTRIC VEHICLE">ELECTRIC VEHICLE</option>
                         </select>
                     </div>
                 </form>
