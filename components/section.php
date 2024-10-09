@@ -2,9 +2,19 @@
 // Include the database connection
 include 'db_connection.php';
 
-// Fetch Counts for Navbar
+// Prevent caching to ensure updated values are fetched
+header("Cache-Control: no-cache, must-revalidate");
+header("Pragma: no-cache");
+
+// Fetch Counts for Navbar with error handling
 $sqlFetchCounts = "SELECT guests, slots, members, reserved FROM counts WHERE id = 1";
 $resultCounts = $conn->query($sqlFetchCounts);
+
+if ($resultCounts === false) {
+    // If query fails, show a detailed error message for debugging
+    die("Error fetching counts: " . $conn->error);
+}
+
 if ($resultCounts->num_rows > 0) {
     $rowCounts = $resultCounts->fetch_assoc();
     $guests = $rowCounts['guests'];
@@ -14,17 +24,17 @@ if ($resultCounts->num_rows > 0) {
 } else {
     // Default values if no row is found
     $guests = 0;
-    $slots = 0;
+    $slots = 500;
     $members = 0;
     $reserved = 0;
 }
 
-// Fetch Records for Section
+// Fetch Records for Section with error handling
 $ratePerMinute = 5; // Define your rate per minute
 $sqlRecords = "SELECT * FROM records";
 $resultRecords = $conn->query($sqlRecords);
 
-// Add the error handling check here for the records query
+// Check if the query for records failed
 if ($resultRecords === false) {
     die("Error fetching records: " . $conn->error);
 }
@@ -40,47 +50,47 @@ if ($resultRecords === false) {
         <!-- Center Column (Record List) -->
         <div class="col-lg-8">
              <!-- Navbar Section (Statistics) -->
-                <div class="row mb-3">
-                    <nav class="navbar-custom">  
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="statistics card-body">
-                                        <h5>Guest</h5>
-                                        <p><?php echo $guests; ?></p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="statistics card-body">
-                                        <h5>Member</h5>
-                                        <p><?php echo $members; ?></p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="statistics card-body">
-                                        <h5>Slot</h5>
-                                        <p><?php echo $slots; ?></p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="statistics card-body">
-                                        <h5>Reserved</h5>
-                                        <p><?php echo $reserved; ?></p>
-                                    </div>
+            <div class="row mb-3">
+                <nav class="navbar-custom">  
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="statistics card-body">
+                                    <h5>Guest</h5>
+                                    <p><?php echo htmlspecialchars($guests); ?></p>
                                 </div>
                             </div>
                         </div>
-                    </nav>
-                </div>
+
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="statistics card-body">
+                                    <h5>Member</h5>
+                                    <p><?php echo htmlspecialchars($members); ?></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="statistics card-body">
+                                    <h5>Slot</h5>
+                                    <p><?php echo htmlspecialchars($slots); ?></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="statistics card-body">
+                                    <h5>Reserved</h5>
+                                    <p><?php echo htmlspecialchars($reserved); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
                 
             <div class="row">
                 <div class="col">
@@ -109,17 +119,20 @@ if ($resultRecords === false) {
 
                                             echo "<tr>";
                                             echo "<td>" . $counter++ . "</td>";
-                                            echo "<td>" . $rowRecords['card_number'] . "</td>";
-                                            echo "<td>" . $rowRecords['name'] . "</td>";
-                                            echo "<td>" . $rowRecords['plate_number'] . "</td>";
-                                            echo "<td>" . $rowRecords['contact'] . "</td>";
+                                            echo "<td>" . htmlspecialchars($rowRecords['card_number']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($rowRecords['name']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($rowRecords['plate_number']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($rowRecords['contact']) . "</td>";
                                             echo "<td>" . ($duration > 0 ? $duration . " minutes" : "0 minutes") . "</td>";
-                                            echo "<td><span class='badge " . ($rowRecords['status'] == 'Active' ? 'bg-success' : ($rowRecords['status'] == 'Overstay' ? 'bg-danger' : 'bg-warning')) . "'>" . $rowRecords['status'] . "</span></td>";
+                                            echo "<td><span class='badge " . 
+                                                ($rowRecords['status'] == 'Active' ? 'bg-success' : 
+                                                ($rowRecords['status'] == 'Overstay' ? 'bg-danger' : 'bg-warning')) . 
+                                                "'>" . htmlspecialchars($rowRecords['status']) . "</span></td>";
                                             echo "<td>₱" . number_format($charge, 2) . "</td>";
                                             echo "</tr>";
                                         }
                                     } else {
-                                        echo "<tr><td colspan='9'>No records found</td></tr>";
+                                        echo "<tr><td colspan='8'>No records found</td></tr>";
                                     }
                                     ?>
                                 </tbody>
